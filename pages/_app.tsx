@@ -16,7 +16,8 @@ import { ColorModeContextProvider } from "@contexts";
 import "@refinedev/antd/dist/reset.css";
 import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
-
+import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
+import { frontendConfig } from "src/config/frontendConfig";
 const API_URL = "https://api.fake-rest.refine.dev";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -26,6 +27,11 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
+
+if (typeof window !== 'undefined') {
+  // we only want to call this init function on the frontend, so we check typeof window !== 'undefined'
+  SuperTokensReact.init(frontendConfig())
+}
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   const renderComponent = () => {
@@ -45,45 +51,46 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
 
   return (
     <>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
-          <Refine
-            routerProvider={routerProvider}
-            dataProvider={dataProvider(API_URL)}
-            notificationProvider={notificationProvider}
-            authProvider={authProvider}
-            resources={[
-              {
-                name: "blog_posts",
-                list: "/blog-posts",
-                create: "/blog-posts/create",
-                edit: "/blog-posts/edit/:id",
-                show: "/blog-posts/show/:id",
-                meta: {
-                  canDelete: true,
+          <SuperTokensWrapper>
+            <Refine
+              routerProvider={routerProvider}
+              dataProvider={dataProvider(API_URL)}
+              notificationProvider={notificationProvider}
+              authProvider={authProvider}
+              resources={[
+                {
+                  name: "blog_posts",
+                  list: "/blog-posts",
+                  create: "/blog-posts/create",
+                  edit: "/blog-posts/edit/:id",
+                  show: "/blog-posts/show/:id",
+                  meta: {
+                    canDelete: true,
+                  },
                 },
-              },
-              {
-                name: "categories",
-                list: "/categories",
-                create: "/categories/create",
-                edit: "/categories/edit/:id",
-                show: "/categories/show/:id",
-                meta: {
-                  canDelete: true,
+                {
+                  name: "categories",
+                  list: "/categories",
+                  create: "/categories/create",
+                  edit: "/categories/edit/:id",
+                  show: "/categories/show/:id",
+                  meta: {
+                    canDelete: true,
+                  },
                 },
-              },
-            ]}
-            options={{
-              syncWithLocation: true,
-              warnWhenUnsavedChanges: true,
-            }}
-          >
-            {renderComponent()}
-            <RefineKbar />
-            <UnsavedChangesNotifier />
-          </Refine>
+              ]}
+              options={{
+                syncWithLocation: true,
+                warnWhenUnsavedChanges: true,
+              }}
+            >
+              {renderComponent()}
+              <RefineKbar />
+              <UnsavedChangesNotifier />
+            </Refine>
+          </SuperTokensWrapper>
         </ColorModeContextProvider>
       </RefineKbarProvider>
     </>
