@@ -2,6 +2,7 @@ import ThirdPartyEmailPasswordNode from 'supertokens-node/recipe/thirdpartyemail
 import SessionNode from 'supertokens-node/recipe/session'
 import { appInfo } from './appInfo'
 import { TypeInput } from "supertokens-node/types";
+import UserMetadata from "supertokens-node/recipe/usermetadata";
 
 export const backendConfig = (): TypeInput => {
   return {
@@ -33,15 +34,33 @@ export const backendConfig = (): TypeInput => {
                 "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgu8gXs+XYkqXD6Ala9Sf/iJXzhbwcoG5dMh1OonpdJUmgCgYIKoZIzj0DAQehRANCAASfrvlFbFCYqn3I2zeknYXLwtH30JuOKestDbSfZYxZNMqhF/OzdZFTV0zc5u5s3eN+oCWbnvl0hM+9IW0UlkdA\n-----END PRIVATE KEY-----",
               teamId: "YWQCXGJRJL",
             },
-          }),
-          // ThirdPartyEmailPasswordNode.Facebook({
-          //   clientSecret: "FACEBOOK_CLIENT_SECRET",
-          //   clientId: "FACEBOOK_CLIENT_ID",
-          // }),
+          })
         ],
       }),
-      SessionNode.init(),
+      SessionNode.init({
+        override: {
+          functions: (originalImplementation) => {
+            return {
+              ...originalImplementation,
+              createNewSession: async function (input) {
+                console.log('input when creating session is', input);
+                let userId = input.userId;
+
+                // This goes in the access token, and is availble to read on the frontend.
+                input.accessTokenPayload = {
+                  ...input.accessTokenPayload,
+                  email: "cbadour@addbloom.com",
+                  avatar: "https://cdn.pixabay.com/photo/2014/04/03/10/32/user-310807_960_720.png",
+                };
+
+                return originalImplementation.createNewSession(input);
+              },
+            };
+          },
+        },
+      }),
+      UserMetadata.init()
     ],
-    isInServerlessEnv: true,
+    isInServerlessEnv: true
   }
 }
