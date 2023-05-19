@@ -3,7 +3,7 @@ import {
   ThemedSiderV2,
   notificationProvider,
 } from "@refinedev/antd";
-import { GitHubBanner, Refine } from "@refinedev/core";
+import { Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import routerProvider, {
   UnsavedChangesNotifier,
@@ -18,6 +18,7 @@ import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
 import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
 import { frontendConfig } from "src/config/frontendConfig";
+import Image from 'next/image';
 const API_URL = "https://api.fake-rest.refine.dev";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -42,8 +43,25 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
     return (
       <ThemedLayoutV2
         Header={() => <Header sticky />}
-        Sider={() => <ThemedSiderV2 fixed />}
-      >
+        Sider={() => <ThemedSiderV2
+          fixed
+          Title={({ collapsed }) => (
+            collapsed ?
+              <Image
+                height={40}
+                width={40}
+                src='/icons/app-logo-collapsed.ico'
+                alt="app-main-logo"
+              />
+              :
+              <Image
+                height={40}
+                width={140}
+                src='/icons/app-logo-colored.svg'
+                alt="app-main-logo"
+              />
+          )}
+        />}>
         <Component {...pageProps} />
       </ThemedLayoutV2>
     );

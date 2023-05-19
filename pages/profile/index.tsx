@@ -27,7 +27,6 @@ const Profile: React.FC<any> = () => {
             <Edit
                 mutationMode='undoable'
                 title='Update Your Profile'
-                canDelete
                 saveButtonProps={saveButtonProps}>
                 <Form {...formProps} layout="vertical">
                     <Form.Item
