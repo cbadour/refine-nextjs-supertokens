@@ -3,14 +3,12 @@ import {
   Layout as AntdLayout,
   Space,
   Switch,
-  Typography,
   theme,
 } from "antd";
 import React, { useContext } from "react";
 import { ColorModeContext } from "../../contexts";
 import UserAvatar from "@components/userAvatar";
 
-const { Text } = Typography;
 const { useToken } = theme;
 
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({

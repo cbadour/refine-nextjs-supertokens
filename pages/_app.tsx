@@ -61,6 +61,28 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
               authProvider={authProvider}
               resources={[
                 {
+                  name: "users",
+                  list: "/users",
+                  create: "/users/create",
+                  edit: "/users/edit/:id",
+                  show: "/users/show/:id",
+                  meta: {
+                    canDelete: true,
+                    parent: 'User Management'
+                  },
+                },
+                {
+                  name: "roles",
+                  list: "/roles",
+                  create: "/roles/create",
+                  edit: "/roles/edit/:id",
+                  show: "/roles/show/:id",
+                  meta: {
+                    canDelete: true,
+                    parent: 'User Management'
+                  },
+                },
+                {
                   name: "blog_posts",
                   list: "/blog-posts",
                   create: "/blog-posts/create",
@@ -79,7 +101,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
                   meta: {
                     canDelete: true,
                   },
-                },
+                }
               ]}
               options={{
                 syncWithLocation: true,
