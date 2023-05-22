@@ -3,9 +3,7 @@ import { IResourceComponentsProps, useMany, useNavigation } from "@refinedev/cor
 import {
     List,
     TextField,
-    useTable,
-    EditButton,
-    ShowButton,
+    useTable
 } from "@refinedev/antd";
 
 import { Table, Space, Button } from "antd";

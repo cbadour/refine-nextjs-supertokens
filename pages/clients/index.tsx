@@ -10,10 +10,10 @@ import { Table, Space, Button } from "antd";
 import React from "react";
 import { IRole } from "src/interfaces/models";
 
-const RolePermissions: React.FC<IResourceComponentsProps> = () => {
+const ClientsList: React.FC<IResourceComponentsProps> = () => {
     const { tableProps } = useTable<IRole>();
 
-    const { push } = useNavigation();
+   // const { push } = useNavigation();
 
     return (
         <List>
@@ -28,7 +28,7 @@ const RolePermissions: React.FC<IResourceComponentsProps> = () => {
                     title="Name"
                     render={(value) => <TextField value={value} />}
                 />
-                <Table.Column<any>
+                {/* <Table.Column<any>
                     title="Actions"
                     dataIndex="actions"
                     render={(_, record) => (
@@ -36,10 +36,10 @@ const RolePermissions: React.FC<IResourceComponentsProps> = () => {
                             <Button onClick={() => push(`assignPermissions/${record.name}`)}>Permissions</Button>
                         </Space>
                     )}
-                />
+                /> */}
             </Table>
         </List>
     );
 };
 
-export default RolePermissions;
+export default ClientsList;

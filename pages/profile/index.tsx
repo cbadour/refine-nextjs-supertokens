@@ -1,25 +1,19 @@
-import { Edit, useForm, useSelect } from '@refinedev/antd'
-import { Form, Input, Select } from 'antd'
-import React, { useEffect } from 'react'
+import { Edit, useForm } from '@refinedev/antd'
+import { Form, Input } from 'antd'
+import { GetServerSideProps } from 'next'
+import React from 'react'
+import { supabaseClient } from 'src/config/supabaseClient'
+import { supabase } from 'src/lib/supabase'
 import { SessionAuth } from 'supertokens-auth-react/recipe/session'
 
-const Profile: React.FC<any> = () => {
-    // useEffect(() => {
-    //     fetch('/api/userInfo')
-    //         .then(res => res.json())
-    //         .then(userInfo => {
-    //             console.log('userInfo', userInfo);
-    //         });
-    // }, []);
+interface ProfileProps {
+    user: any
+}
 
-    const { formProps, saveButtonProps, queryResult } = useForm<any>({
+const Profile: React.FC<ProfileProps> = ({ user }) => {
+
+    const { formProps, saveButtonProps } = useForm<any>({
         warnWhenUnsavedChanges: true
-    });
-
-    const postData = queryResult?.data?.data;
-    const { selectProps: categorySelectProps } = useSelect<any>({
-        resource: "categories",
-        defaultValue: postData?.category.id,
     });
 
     return (
@@ -30,49 +24,34 @@ const Profile: React.FC<any> = () => {
                 saveButtonProps={saveButtonProps}>
                 <Form {...formProps} layout="vertical">
                     <Form.Item
-                        label="Title"
-                        name="title"
+                        label="Name"
+                        name="name"
                         rules={[
                             {
                                 required: true,
-                            },
+                            }
                         ]}>
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Category"
-                        name={["category", "id"]}
+                        label="Phone"
+                        name="phone"
                         rules={[
                             {
                                 required: true,
-                            },
+                            }
                         ]}>
-                        <Select {...categorySelectProps} />
+                        <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Status"
-                        name="status"
+                        label="Location"
+                        name="location"
                         rules={[
                             {
                                 required: true,
-                            },
+                            }
                         ]}>
-                        <Select
-                            options={[
-                                {
-                                    label: "Published",
-                                    value: "published",
-                                },
-                                {
-                                    label: "Draft",
-                                    value: "draft",
-                                },
-                                {
-                                    label: "Rejected",
-                                    value: "rejected",
-                                }
-                            ]}
-                        />
+                        <Input />
                     </Form.Item>
                 </Form>
             </Edit>
@@ -81,3 +60,18 @@ const Profile: React.FC<any> = () => {
 }
 
 export default Profile;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+
+    const provider = supabase.dataProvider(supabaseClient);
+    const { data } = await provider.getOne({
+        resource: 'users',
+        id: 1
+    });
+
+    return {
+        props: {
+            user: data
+        }
+    }
+}

@@ -14,12 +14,14 @@ import { AppProps } from "next/app";
 import { Header } from "@components/header";
 import { ColorModeContextProvider } from "@contexts";
 import "@refinedev/antd/dist/reset.css";
-import dataProvider from "@refinedev/simple-rest";
+import simpleRestDataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
 import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
 import { frontendConfig } from "src/config/frontendConfig";
 import Image from 'next/image';
 const API_URL = "https://api.fake-rest.refine.dev";
+import { supabaseClient } from "src/config/supabaseClient";
+import { supabase } from "src/lib/supabase";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -74,7 +76,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
           <SuperTokensWrapper>
             <Refine
               routerProvider={routerProvider}
-              dataProvider={dataProvider(API_URL)}
+              dataProvider={{
+                default: simpleRestDataProvider(API_URL),
+                supabase: supabase.dataProvider(supabaseClient)
+              }}
               notificationProvider={notificationProvider}
               authProvider={authProvider}
               resources={[
@@ -119,13 +124,23 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
                   meta: {
                     canDelete: true,
                   },
+                },
+                {
+                  name: "clients",
+                  list: "/clients",
+                  create: "/clients/create",
+                  edit: "/clients/edit/:id",
+                  show: "/clients/show/:id",
+                  meta: {
+                    canDelete: true,
+                    dataProviderName: 'supabase'
+                  }
                 }
               ]}
               options={{
                 syncWithLocation: true,
                 warnWhenUnsavedChanges: true,
-              }}
-            >
+              }}>
               {renderComponent()}
               <RefineKbar />
               <UnsavedChangesNotifier />

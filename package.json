@@ -18,6 +18,7 @@
     "@refinedev/kbar": "^1.1.0",
     "@refinedev/nextjs-router": "^5.1.4",
     "@refinedev/simple-rest": "^4.0.0",
+    "@refinedev/supabase": "^5.5.2",
     "antd": "^5.0.5",
     "next": "^13.0.6",
     "nextjs-cors": "^2.1.2",
