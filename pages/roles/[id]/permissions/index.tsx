@@ -1,19 +1,22 @@
-import { IResourceComponentsProps, useMany, useNavigation } from "@refinedev/core";
+import { IResourceComponentsProps } from "@refinedev/core";
 
 import {
+    DeleteButton,
     List,
     TextField,
     useTable
 } from "@refinedev/antd";
 
-import { Table, Space, Button } from "antd";
+import { Table, Space } from "antd";
 import React from "react";
-import { IRole } from "src/interfaces/models";
+import { IRolePermissions } from "src/interfaces/models";
 
 const RolePermissions: React.FC<IResourceComponentsProps> = () => {
-    const { tableProps } = useTable<IRole>();
 
-    const { push } = useNavigation();
+    const { tableProps } = useTable<IRolePermissions>({
+        resource: 'rolePermissions',
+        dataProviderName: 'supabase'
+    });
 
     return (
         <List>
@@ -24,8 +27,13 @@ const RolePermissions: React.FC<IResourceComponentsProps> = () => {
                     render={(value) => <TextField value={value} />}
                 />
                 <Table.Column
-                    dataIndex="name"
-                    title="Name"
+                    dataIndex="roleId"
+                    title="Role"
+                    render={(value) => <TextField value={value} />}
+                />
+                <Table.Column
+                    dataIndex="permissionId"
+                    title="Permission"
                     render={(value) => <TextField value={value} />}
                 />
                 <Table.Column<any>
@@ -33,7 +41,11 @@ const RolePermissions: React.FC<IResourceComponentsProps> = () => {
                     dataIndex="actions"
                     render={(_, record) => (
                         <Space>
-                            <Button onClick={() => push(`assignPermissions/${record.name}`)}>Permissions</Button>
+                            <DeleteButton
+                                hideText
+                                size="small"
+                                recordItemId={record.id}
+                            />
                         </Space>
                     )}
                 />

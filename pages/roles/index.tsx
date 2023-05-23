@@ -1,16 +1,12 @@
-import { IResourceComponentsProps, useMany, useNavigation } from "@refinedev/core";
-
-import {
-    List,
-    TextField,
-    useTable
-} from "@refinedev/antd";
+import { IResourceComponentsProps, useNavigation } from "@refinedev/core";
+import { List, TextField, useTable } from "@refinedev/antd";
 
 import { Table, Space, Button } from "antd";
 import React from "react";
 import { IRole } from "src/interfaces/models";
 
 const RolesList: React.FC<IResourceComponentsProps> = () => {
+
     const { tableProps } = useTable<IRole>();
 
     const { push } = useNavigation();
@@ -33,7 +29,10 @@ const RolesList: React.FC<IResourceComponentsProps> = () => {
                     dataIndex="actions"
                     render={(_, record) => (
                         <Space>
-                            <Button onClick={() => push(`assignPermissions/${record.name}`)}>Permissions</Button>
+                            <Button
+                                onClick={() => push(`/roles/${record.id}/permissions`)}>
+                                Permissions
+                            </Button>
                         </Space>
                     )}
                 />

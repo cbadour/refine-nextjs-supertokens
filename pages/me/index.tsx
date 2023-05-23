@@ -1,19 +1,17 @@
 import { Edit, useForm } from '@refinedev/antd'
 import { Form, Input } from 'antd'
-import { GetServerSideProps } from 'next'
 import React from 'react'
-import { supabaseClient } from 'src/config/supabaseClient'
-import { supabase } from 'src/lib/supabase'
 import { SessionAuth } from 'supertokens-auth-react/recipe/session'
 
 interface ProfileProps {
     user: any
 }
 
-const Profile: React.FC<ProfileProps> = ({ user }) => {
+const Profile: React.FC<ProfileProps> = () => {
 
     const { formProps, saveButtonProps } = useForm<any>({
-        warnWhenUnsavedChanges: true
+        warnWhenUnsavedChanges: true,
+        id: 1
     });
 
     return (
@@ -61,17 +59,23 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
 
 export default Profile;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+// export const getServerSideProps: GetServerSideProps = async () => {
 
-    const provider = supabase.dataProvider(supabaseClient);
-    const { data } = await provider.getOne({
-        resource: 'users',
-        id: 1
-    });
+//     const provider = supabase.dataProvider(supabaseClient);
+//     let data = null;
 
-    return {
-        props: {
-            user: data
-        }
-    }
-}
+//     try {
+//         data = await provider.getOne({
+//             resource: 'users',
+//             id: 1
+//         });
+//     } catch (error) {
+//         console.log('error is ', error)
+//     }
+
+//     return {
+//         props: {
+//             user: data
+//         }
+//     }
+// }

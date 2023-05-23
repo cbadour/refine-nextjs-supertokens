@@ -3,10 +3,11 @@ export interface IRole {
     name: string
 }
 
-export interface IPermissions {
+export interface IPermission {
     name: string
 }
 
-export interface IRolePermissions extends IPermissions {
-
+export interface IRolePermissions {
+    roleId: string,
+    permission: IPermission
 }

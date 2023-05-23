@@ -13,4 +13,13 @@ module.exports = {
     "rc-pagination",
     "rc-picker",
   ],
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/users',
+        permanent: true,
+      },
+    ];
+  },
 };

@@ -3,6 +3,7 @@ import React from 'react'
 import { useSessionContext } from 'supertokens-auth-react/recipe/session';
 import {
   Avatar,
+  Button,
   Space,
   Typography
 } from "antd";
@@ -20,13 +21,12 @@ const UserAvatar = () => {
 
   return (
     <React.Fragment>
-      <Space
-        style={{ marginLeft: "8px", cursor: "pointer" }}
-        size="middle"
-        onClick={() => pushRoute('/profile')}>
+      <Button
+        onClick={() => pushRoute('/me')}
+        style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', height: 40 }}>
         {session.accessTokenPayload?.email && <Typography.Text strong>{session.accessTokenPayload?.email}</Typography.Text>}
         {<Avatar src={avatarSrc} alt='User Avatar' />}
-      </Space>
+      </Button>
     </React.Fragment>
   )
 }
