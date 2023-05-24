@@ -1,15 +1,15 @@
-import { IResourceComponentsProps, useNavigation } from "@refinedev/core";
-import { List, TextField, useTable } from "@refinedev/antd";
-
+import { IResourceComponentsProps } from "@refinedev/core";
+import { DeleteButton, EditButton, List, TextField, useTable } from "@refinedev/antd";
 import { Table, Space, Button } from "antd";
 import React from "react";
 import { IRole } from "src/interfaces/models";
+import { useRouter } from "next/router";
 
 const RolesList: React.FC<IResourceComponentsProps> = () => {
 
     const { tableProps } = useTable<IRole>();
 
-    const { push } = useNavigation();
+    const { push } = useRouter();
 
     return (
         <List>
@@ -33,12 +33,22 @@ const RolesList: React.FC<IResourceComponentsProps> = () => {
                                 onClick={() => push(`/roles/${record.id}/permissions`)}>
                                 Permissions
                             </Button>
+
+                            <EditButton
+                                hideText
+                                recordItemId={record.id}
+                            />
+
+                            <DeleteButton
+                                hideText
+                                recordItemId={record.id}
+                            />
                         </Space>
                     )}
                 />
             </Table>
         </List>
-    );
-};
+    )
+}
 
 export default RolesList;

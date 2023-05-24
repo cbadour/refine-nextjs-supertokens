@@ -8,6 +8,6 @@ export interface IPermission {
 }
 
 export interface IRolePermissions {
-    roleId: string,
-    permission: IPermission
+    roleId: number,
+    permissionId: number
 }
