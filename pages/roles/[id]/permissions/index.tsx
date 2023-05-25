@@ -1,4 +1,4 @@
-import { IResourceComponentsProps, useMany } from "@refinedev/core";
+import { IResourceComponentsProps, useMany, useOne } from "@refinedev/core";
 import {
     DeleteButton,
     List,
@@ -10,7 +10,7 @@ import { Table, Space, Button, Modal } from "antd";
 import React from "react";
 import { IRolePermissions } from "src/interfaces/models";
 import { GetServerSideProps } from "next";
-import AssignPermissions from "@components/permissions/assignPermissions/assignPermissions";
+import AssignPermissions from "@components/permissions/assignPermissions";
 
 interface RolePermissionsProps extends IResourceComponentsProps {
     roleId: number
@@ -47,19 +47,19 @@ const RolePermissions: React.FC<RolePermissionsProps> = ({ roleId }) => {
         }
     });
 
+    const { data: roleData } = useOne({
+        resource: 'roles',
+        id: roleId
+    })
+
     return (
         <React.Fragment>
             <List
-                title={`Permissions for Admin`}
+                title={`Permissions for ${roleData?.data.name}`}
                 headerButtons={() => (
                     <Button type="primary" onClick={show}>Manage Permissions</Button>
                 )}>
                 <Table {...tableProps} rowKey="id">
-                    <Table.Column
-                        dataIndex="id"
-                        title="ID"
-                        render={(value) => <TextField value={value} />}
-                    />
                     <Table.Column
                         dataIndex="permissionId"
                         title="Permission"

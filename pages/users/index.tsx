@@ -45,7 +45,7 @@ const UsersList: React.FC<IResourceComponentsProps> = () => {
                 <Table.Column
                     dataIndex="profileImagePath"
                     title="Profile"
-                    render={(value) => <Image src={value} width={30} height={30} alt="user image" />}
+                    render={(value) => value ? <Image src={value} width={30} height={30} alt="user image" /> : ''}
                 />
 
                 <Table.Column

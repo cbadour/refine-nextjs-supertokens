@@ -5,12 +5,10 @@ import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import routerProvider, { UnsavedChangesNotifier } from "@refinedev/nextjs-router";
 import { ColorModeContextProvider } from "@contexts";
 import "@refinedev/antd/dist/reset.css";
-//import simpleRestDataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
 import { supabaseClient } from "src/config/supabaseClient";
 import { supabase } from "src/lib/supabase";
 import { useAccessControl } from "src/lib/accessControl/useAccessControl";
-//const API_URL = "https://api.fake-rest.refine.dev";
 
 const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
 
@@ -47,7 +45,7 @@ const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
                             meta: {
                                 canDelete: true,
                                 parent: 'User Management',
-                            },
+                            }
                         },
                         {
                             name: "roles",

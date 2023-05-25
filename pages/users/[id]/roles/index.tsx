@@ -1,4 +1,4 @@
-import { IResourceComponentsProps, useMany } from "@refinedev/core";
+import { IResourceComponentsProps, useMany, useOne, useShow } from "@refinedev/core";
 import {
     DeleteButton,
     List,
@@ -10,7 +10,7 @@ import { Table, Space, Button, Modal } from "antd";
 import React from "react";
 import { IUserRoles } from "src/interfaces/models";
 import { GetServerSideProps } from "next";
-import AssignRoles from "@components/roles/assignRoles/assignRoles";
+import AssignRoles from "@components/roles/assignRoles";
 
 interface UserRolesProps extends IResourceComponentsProps {
     userId: number
@@ -47,19 +47,19 @@ const UserRoles: React.FC<UserRolesProps> = ({ userId }) => {
         }
     });
 
+    const { data: userData } = useOne({
+        resource: 'users',
+        id: userId
+    })
+
     return (
         <React.Fragment>
             <List
-                title={`Roles for Chady`}
+                title={`Roles for ${userData?.data.name}`}
                 headerButtons={() => (
                     <Button type="primary" onClick={show}>Manage Roles</Button>
                 )}>
                 <Table {...tableProps} rowKey="id">
-                    <Table.Column
-                        dataIndex="id"
-                        title="ID"
-                        render={(value) => <TextField value={value} />}
-                    />
                     <Table.Column
                         dataIndex="roleId"
                         title="Role"

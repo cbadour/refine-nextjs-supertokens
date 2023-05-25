@@ -15,11 +15,6 @@ const RolesList: React.FC<IResourceComponentsProps> = () => {
         <List>
             <Table {...tableProps} rowKey="id">
                 <Table.Column
-                    dataIndex="id"
-                    title="ID"
-                    render={(value) => <TextField value={value} />}
-                />
-                <Table.Column
                     dataIndex="name"
                     title="Name"
                     render={(value) => <TextField value={value} />}
