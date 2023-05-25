@@ -2,37 +2,36 @@ import { List, TextField, useTable } from '@refinedev/antd'
 import { useCreate } from '@refinedev/core';
 import { Button, Form, Input, Space, Table } from 'antd'
 import React from 'react'
-import { IPermission } from 'src/interfaces/models';
+import { IRole, IUserRoles } from 'src/interfaces/models';
 
-interface AssignPermissionsProps {
-    roleId: number
+interface AssignRolesProps {
+    userId: number,
+    userRoles: IUserRoles[]
 }
 
-const AssignPermissions: React.FC<AssignPermissionsProps> = ({ roleId }) => {
+const AssignRoles: React.FC<AssignRolesProps> = ({ userId, userRoles }) => {
 
     const { mutate } = useCreate();
-    const { tableProps, searchFormProps } = useTable<IPermission>({
-        resource: 'permissions',
-        dataProviderName: 'supabase',
+    const { tableProps, searchFormProps } = useTable<IRole>({
+        resource: 'roles',
         syncWithLocation: false,
         onSearch: (values: any) => {
             return [
                 {
                     field: "name",
                     operator: "contains",
-                    value: values.title,
+                    value: values.title
                 }
             ];
         }
     });
 
-    const assignPermission = (permissionId: number) => {
+    const assignRoles = (roleId: number) => {
         mutate({
-            resource: 'rolePermissions',
-            dataProviderName: 'supabase',
+            resource: 'userRoles',
             values: {
                 roleId: roleId,
-                permissionId: permissionId
+                userId: userId
             },
             invalidates: ['list', 'many']
         })
@@ -67,12 +66,17 @@ const AssignPermissions: React.FC<AssignPermissionsProps> = ({ roleId }) => {
                     dataIndex="actions"
                     render={(_, record) => (
                         <Space>
-                            <Button
-                                type='default'
-                                size="small"
-                                onClick={() => assignPermission(record.id)}>
-                                Assign
-                            </Button>
+                            {
+                                userRoles.find(ur => ur.roleId === record.id) ?
+                                    null
+                                    :
+                                    <Button
+                                        type='default'
+                                        size="small"
+                                        onClick={() => assignRoles(record.id)}>
+                                        Assign
+                                    </Button>
+                            }
                         </Space>
                     )}
                 />
@@ -81,4 +85,4 @@ const AssignPermissions: React.FC<AssignPermissionsProps> = ({ roleId }) => {
     )
 }
 
-export default AssignPermissions
+export default AssignRoles;

@@ -6,7 +6,7 @@ interface AccessOptions {
 }
 
 const useAccessControl = () => {
-    let session = useSessionContext();
+    const session = useSessionContext();
 
     const canAccess = (accessOption: AccessOptions): boolean => {
         if (session.loading) {

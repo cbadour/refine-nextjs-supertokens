@@ -8,37 +8,37 @@ import {
 } from "@refinedev/antd";
 import { Table, Space, Button, Modal } from "antd";
 import React from "react";
-import { IRolePermissions } from "src/interfaces/models";
+import { IUserRoles } from "src/interfaces/models";
 import { GetServerSideProps } from "next";
-import AssignPermissions from "@components/permissions/assignPermissions/assignPermissions";
+import AssignRoles from "@components/roles/assignRoles/assignRoles";
 
-interface RolePermissionsProps extends IResourceComponentsProps {
-    roleId: number
+interface UserRolesProps extends IResourceComponentsProps {
+    userId: number
 }
 
-const RolePermissions: React.FC<RolePermissionsProps> = ({ roleId }) => {
+const UserRoles: React.FC<UserRolesProps> = ({ userId }) => {
 
-    const { tableProps, tableQueryResult } = useTable<IRolePermissions>({
-        resource: 'rolePermissions',
+    const { tableProps, tableQueryResult } = useTable<IUserRoles>({
+        resource: 'userRoles',
         filters: {
             permanent: [
                 {
-                    field: 'roleId',
+                    field: 'userId',
                     operator: 'eq',
-                    value: roleId
+                    value: userId
                 }
             ]
         }
     });
 
-    const rolePermissions = tableQueryResult?.data?.data ?? [];
+    const userRoles = tableQueryResult?.data?.data ?? [];
 
-    const { data: permissionsData } = useMany({
-        resource: "permissions",
-        ids: rolePermissions.map((rolePermission) => rolePermission?.permissionId),
+    const { data: rolesData } = useMany({
+        resource: "roles",
+        ids: userRoles.map((userRole) => userRole?.roleId),
         queryOptions: {
-            enabled: !!rolePermissions.length
-        },
+            enabled: !!userRoles.length
+        }
     });
 
     const { show, modalProps } = useModal({
@@ -50,9 +50,9 @@ const RolePermissions: React.FC<RolePermissionsProps> = ({ roleId }) => {
     return (
         <React.Fragment>
             <List
-                title={`Permissions for Admin`}
+                title={`Roles for Chady`}
                 headerButtons={() => (
-                    <Button type="primary" onClick={show}>Manage Permissions</Button>
+                    <Button type="primary" onClick={show}>Manage Roles</Button>
                 )}>
                 <Table {...tableProps} rowKey="id">
                     <Table.Column
@@ -61,11 +61,11 @@ const RolePermissions: React.FC<RolePermissionsProps> = ({ roleId }) => {
                         render={(value) => <TextField value={value} />}
                     />
                     <Table.Column
-                        dataIndex="permissionId"
-                        title="Permission"
+                        dataIndex="roleId"
+                        title="Role"
                         render={(value) => <TextField value={
                             <span>
-                                {permissionsData?.data.find(data => data.id === value)?.name as any}
+                                {rolesData?.data.find(data => data.id === value)?.name as any}
                             </span>
                         } />}
                     />
@@ -78,7 +78,7 @@ const RolePermissions: React.FC<RolePermissionsProps> = ({ roleId }) => {
                                     hideText
                                     size="small"
                                     recordItemId={record.id}
-                                    resource="rolePermissions"
+                                    resource="userRoles"
                                 />
                             </Space>
                         )}
@@ -87,21 +87,21 @@ const RolePermissions: React.FC<RolePermissionsProps> = ({ roleId }) => {
             </List>
 
             <Modal {...modalProps}>
-                <AssignPermissions
-                    roleId={roleId}
-                    rolePermissions={rolePermissions}
+                <AssignRoles
+                    userId={userId}
+                    userRoles={userRoles}
                 />
             </Modal>
         </React.Fragment>
     )
 }
 
-export default RolePermissions;
+export default UserRoles;
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return {
         props: {
-            roleId: params?.id
+            userId: params?.id
         }
     }
 }

@@ -11,3 +11,8 @@ export interface IRolePermissions {
     roleId: number,
     permissionId: number
 }
+
+export interface IUserRoles {
+    userId: number,
+    roleId: number
+}

@@ -5,12 +5,12 @@ import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import routerProvider, { UnsavedChangesNotifier } from "@refinedev/nextjs-router";
 import { ColorModeContextProvider } from "@contexts";
 import "@refinedev/antd/dist/reset.css";
-import simpleRestDataProvider from "@refinedev/simple-rest";
+//import simpleRestDataProvider from "@refinedev/simple-rest";
 import { authProvider } from "src/authProvider";
 import { supabaseClient } from "src/config/supabaseClient";
 import { supabase } from "src/lib/supabase";
 import { useAccessControl } from "src/lib/accessControl/useAccessControl";
-const API_URL = "https://api.fake-rest.refine.dev";
+//const API_URL = "https://api.fake-rest.refine.dev";
 
 const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
 
@@ -21,10 +21,7 @@ const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
             <ColorModeContextProvider>
                 <Refine
                     routerProvider={routerProvider}
-                    dataProvider={{
-                        default: simpleRestDataProvider(API_URL),
-                        supabase: supabase.dataProvider(supabaseClient)
-                    }}
+                    dataProvider={supabase.dataProvider(supabaseClient)}
                     accessControlProvider={{
                         can: async ({ resource, action }) => {
                             return { can: true }
@@ -49,7 +46,7 @@ const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
                             show: "/users/show/:id",
                             meta: {
                                 canDelete: true,
-                                parent: 'User Management'
+                                parent: 'User Management',
                             },
                         },
                         {
@@ -60,8 +57,7 @@ const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
                             show: "/roles/show/:id",
                             meta: {
                                 canDelete: true,
-                                parent: 'User Management',
-                                dataProviderName: 'supabase'
+                                parent: 'User Management'
                             }
                         },
                         {
@@ -71,28 +67,23 @@ const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
                             edit: "/clients/edit/:id",
                             show: "/clients/show/:id",
                             meta: {
-                                canDelete: true,
-                                dataProviderName: 'supabase'
+                                canDelete: true
                             }
                         },
                         {
                             name: 'rolePermissions',
                             meta: {
-                                canDelete: true,
-                                dataProviderName: 'supabase',
+                                canDelete: true
                             }
                         },
                         {
                             name: "userProfiles",
-                            edit: "/me",
-                            meta: {
-                                dataProviderName: 'supabase'
-                            }
+                            edit: "/me"
                         }
                     ]}
                     options={{
                         syncWithLocation: true,
-                        warnWhenUnsavedChanges: true,
+                        warnWhenUnsavedChanges: true
                     }}>
                     {children}
                     <RefineKbar />
