@@ -7,7 +7,7 @@ import { ColorModeContextProvider } from "@contexts";
 import "@refinedev/antd/dist/reset.css";
 import { authProvider } from "src/authProvider";
 import { supabaseClient } from "src/config/supabaseClient";
-import { supabase } from "src/lib/supabase";
+import { supabase, supabaseCloud } from "src/lib/supabase";
 import { useAccessControl } from "src/lib/accessControl/useAccessControl";
 
 const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
@@ -19,7 +19,10 @@ const AdminPanelBuilder: React.FC<PropsWithChildren> = ({ children }) => {
             <ColorModeContextProvider>
                 <Refine
                     routerProvider={routerProvider}
-                    dataProvider={supabase.dataProvider(supabaseClient)}
+                    dataProvider={{
+                        default: supabase.dataProvider(supabaseClient),
+                        functional: supabaseCloud.dataProvider(supabaseClient)
+                    }}
                     accessControlProvider={{
                         can: async ({ resource, action }) => {
                             return { can: true }

@@ -9,7 +9,6 @@ const useAccessControl = () => {
     const session = useSessionContext();
 
     const canAccess = (accessOption: AccessOptions): boolean => {
-        debugger
         if (session.loading) {
             return false;
         }
